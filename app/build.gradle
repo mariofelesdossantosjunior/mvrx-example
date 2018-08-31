@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+
+    defaultConfig {
+        applicationId "br.com.hussan.mvrx"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+    }
+    // Set your Signing Configs
+    signingConfigs {
+        release {
+            storeFile file("ddsday.jks")
+            storePassword "1234"
+            keyAlias "123-123"
+            keyPassword "1234"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            useProguard false
+
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            java.srcDirs += 'src/main/kotlin'
+        }
+        staging {
+            java.srcDirs += 'src/prod/kotlin'
+        }
+        debug {
+            java.srcDirs += ['src/main/kotlin', 'src/debug/kotlin']
+        }
+        test {
+            java.srcDirs += 'src/test/kotlin'
+        }
+
+    }
+    flavorDimensions 'dimension'
+
+    productFlavors {
+        prod {
+            dimension 'dimension'
+            buildConfigField "String", "API_URL", "\"https://api.github.com/\""
+        }
+        staging {
+            dimension 'dimension'
+            buildConfigField "String", "API_URL", "\"https://api.github.com/\""
+        }
+    }
+
+}
+
+dependencies {
+    // Support libraries
+    implementation deps.support.app_compat
+    implementation deps.support.recyclerview
+    implementation deps.support.design
+
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.rxjava2adapter
+
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    implementation 'com.airbnb.android:mvrx:0.5.0'
+    implementation("com.airbnb.android:epoxy:2.16.4") { exclude group: 'com.android.support' }
+    kapt "com.airbnb.android:epoxy-processor:2.16.4"
+
+    kapt deps.dagger.android_support_compiler
+    kapt deps.dagger.compiler
+
+    // Kotlin
+    implementation deps.kotlin.stdlib
+
+    // Dependencies for local unit tests
+    testImplementation deps.junit
+    testImplementation deps.mockito.all
+    testImplementation deps.hamcrest
+    testImplementation deps.kotlin.stdlib
+    testImplementation deps.kotlin.test
+
+}
