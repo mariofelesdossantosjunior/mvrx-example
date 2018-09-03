@@ -11,7 +11,7 @@ import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.fragmentViewModel
 import kotlinx.android.synthetic.main.fragment_repositories.rvList
 
-class UserRepositoriesFragment : BaseMvRxFragment(), Injectable {
+class UserRepositoriesFragment : BaseMvRxFragment() {
 
     private val viewModel: UserRepositoriesViewModel by fragmentViewModel()
     private val epoxyController by lazy { epoxyController() }

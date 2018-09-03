@@ -58,9 +58,5 @@ open class ApiModule {
     @Provides
     @Singleton
     fun providesGson(): Gson = GsonBuilder().create()
-
-    @Provides
-    fun providesViewState() = UserRepositoriesState()
-
-
+    
 }

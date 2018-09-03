@@ -7,8 +7,8 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import javax.inject.Inject
 
 class UserRepositoriesViewModel
-@Inject constructor(initialState: UserRepositoriesState, private var dataSource: UserRepositoryDataSource) :
-        BaseMvRxViewModel<UserRepositoriesState>(initialState, true) {
+@Inject constructor(private var dataSource: UserRepositoryDataSource) :
+        BaseMvRxViewModel<UserRepositoriesState>(UserRepositoriesState(), true) {
 
     init {
         logStateChanges()
